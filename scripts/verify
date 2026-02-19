@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+python -m pip install --upgrade pip
+pip install -r requirements.txt pytest
+if [[ -f backend/requirements-backend.txt ]]; then
+  pip install -r backend/requirements-backend.txt
+fi
+python -m pytest -q tests
+if [[ -d backend/tests ]]; then
+  python -m pytest -q backend/tests
+fi
+chmod +x ./start-webui.sh || true
+timeout 60s ./start-webui.sh || true
