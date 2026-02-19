@@ -9,3 +9,13 @@ if not hasattr(torchaudio, "AudioMetaData"):
             pass
 
     torchaudio.AudioMetaData = AudioMetaData  # type: ignore[attr-defined]
+
+
+if not hasattr(torchaudio, "list_audio_backends"):
+    torchaudio.list_audio_backends = lambda: []  # type: ignore[attr-defined]
+
+if not hasattr(torchaudio, "set_audio_backend"):
+    torchaudio.set_audio_backend = lambda *_args, **_kwargs: None  # type: ignore[attr-defined]
+
+if not hasattr(torchaudio, "get_audio_backend"):
+    torchaudio.get_audio_backend = lambda: None  # type: ignore[attr-defined]
