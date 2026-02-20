@@ -46,9 +46,24 @@ jobs:
               c.body?.includes(`- #${issue_number}:`)
             );
 
-            // Idempotency guard: issue is already fully transitioned; skip all mutations.
+            // Idempotency guard: issue is already fully transitioned; skip label/comment mutations
+            // but still consume agent:ready to prevent ready+in-progress co-existence.
             if (hadInProgress && existingContract) {
-              core.info("Issue already in-progress with existing contract; skipping.");
+              if (hadReady) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number,
+                    name: "agent:ready",
+                  });
+                } catch (error) {
+                  if (error.status !== 404) {
+                    throw error;
+                  }
+                }
+              }
+              core.info("Issue already in-progress with existing contract; skipping duplicate enqueue.");
               return;
             }
 
