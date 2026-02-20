@@ -46,6 +46,12 @@ jobs:
               c.body?.includes(`- #${issue_number}:`)
             );
 
+            // Idempotency guard: issue is already fully transitioned; skip all mutations.
+            if (hadInProgress && existingContract) {
+              core.info("Issue already in-progress with existing contract; skipping.");
+              return;
+            }
+
             let addedInProgress = false;
             let removedReady = false;
 
@@ -115,7 +121,7 @@ jobs:
                     name: "agent:in-progress",
                   });
                 } catch (rollbackError) {
-                  core.warning(`Rollback remove agent:in-progress failed: ${rollbackError.message}`);
+                  core.error(`Rollback remove agent:in-progress failed: ${rollbackError.message}`);
                 }
               }
 
@@ -128,7 +134,7 @@ jobs:
                     labels: ["agent:ready"],
                   });
                 } catch (rollbackError) {
-                  core.warning(`Rollback add agent:ready failed: ${rollbackError.message}`);
+                  core.error(`Rollback add agent:ready failed: ${rollbackError.message}`);
                 }
               }
 
