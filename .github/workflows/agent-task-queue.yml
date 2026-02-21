@@ -46,6 +46,27 @@ jobs:
               c.body?.includes(`- #${issue_number}:`)
             );
 
+            // Idempotency guard: issue is already fully transitioned; skip label/comment mutations
+            // but still consume agent:ready to prevent ready+in-progress co-existence.
+            if (hadInProgress && existingContract) {
+              if (hadReady) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number,
+                    name: "agent:ready",
+                  });
+                } catch (error) {
+                  if (error.status !== 404) {
+                    throw error;
+                  }
+                }
+              }
+              core.info("Issue already in-progress with existing contract; skipping duplicate enqueue.");
+              return;
+            }
+
             let addedInProgress = false;
             let removedReady = false;
 
@@ -115,7 +136,7 @@ jobs:
                     name: "agent:in-progress",
                   });
                 } catch (rollbackError) {
-                  core.warning(`Rollback remove agent:in-progress failed: ${rollbackError.message}`);
+                  core.error(`Rollback remove agent:in-progress failed: ${rollbackError.message}`);
                 }
               }
 
@@ -128,7 +149,7 @@ jobs:
                     labels: ["agent:ready"],
                   });
                 } catch (rollbackError) {
-                  core.warning(`Rollback add agent:ready failed: ${rollbackError.message}`);
+                  core.error(`Rollback add agent:ready failed: ${rollbackError.message}`);
                 }
               }
 
