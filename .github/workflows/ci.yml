@@ -12,6 +12,12 @@ on:
       - master
       - intel-gpu
 
+# Constrain pip's isolated build environment for every job below. Required because
+# one source dependency's setup.py imports pkg_resources, which setuptools 82
+# removed. See constraints.txt for the full explanation.
+env:
+  PIP_CONSTRAINT: ${{ github.workspace }}/constraints.txt
+
 jobs:
   test:
     runs-on: ubuntu-latest
