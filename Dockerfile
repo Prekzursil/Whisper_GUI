@@ -7,7 +7,12 @@ RUN apt-get update && \
 
 WORKDIR /Whisper-WebUI
 
-COPY requirements.txt .
+COPY requirements.txt constraints.txt ./
+
+# PIP_CONSTRAINT constrains pip's isolated build environment. Required because one
+# source dependency's setup.py imports pkg_resources, which setuptools 82 removed.
+# See constraints.txt for the full explanation.
+ENV PIP_CONSTRAINT=/Whisper-WebUI/constraints.txt
 
 RUN python3 -m venv venv && \
     . venv/bin/activate && \

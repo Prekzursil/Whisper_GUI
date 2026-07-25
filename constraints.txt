@@ -1,0 +1,26 @@
+# Build-time pip constraint, applied via the PIP_CONSTRAINT environment variable.
+#
+# Why this file exists
+# --------------------
+# requirements.txt installs `git+https://github.com/jhj0517/jhj0517-whisper.git`,
+# a source dependency whose setup.py does `import pkg_resources` on line 5.
+#
+# setuptools removed the bundled `pkg_resources` package in 82.0.0 (it is still
+# shipped in 81.0.0 and earlier). That repository declares no [build-system] table,
+# so pip installs the newest setuptools into its isolated build environment and the
+# setup.py can no longer run:
+#
+#     ModuleNotFoundError: No module named 'pkg_resources'
+#     ERROR: Failed to build 'git+https://github.com/jhj0517/jhj0517-whisper.git'
+#           when getting requirements to build wheel
+#
+# That breaks every `pip install -r requirements.txt`, which is why CI cannot get
+# past dependency installation.
+#
+# Note: a `-c constraints.txt` line inside requirements.txt does NOT fix this - pip
+# does not propagate requirements-file constraints into the isolated build
+# environment. The PIP_CONSTRAINT environment variable does, so Install.sh,
+# Install.bat, the Dockerfile and the CI workflow each set it.
+#
+# Remove this constraint once the upstream package stops importing pkg_resources.
+setuptools<82

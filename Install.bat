@@ -8,6 +8,11 @@ echo checked the venv folder. now installing requirements..
 
 call "%~dp0\venv\scripts\activate"
 
+REM Constrain pip's isolated build environment. Required because one source
+REM dependency's setup.py imports pkg_resources, which setuptools 82 removed.
+REM See constraints.txt for the full explanation.
+set "PIP_CONSTRAINT=%~dp0constraints.txt"
+
 python -m pip install -U pip
 pip install -r requirements.txt
 
