@@ -176,7 +176,7 @@ class App:
                     with gr.TabItem(_("Mic")):  # tab3
                         with gr.Row():
                             mic_input = gr.Microphone(label=_("Record with Mic"), type="filepath", interactive=True,
-                                                      show_download_button=True)
+                                                      buttons=["download"])
 
                         pipeline_params, dd_file_format, cb_timestamp = self.create_pipeline_inputs()
 

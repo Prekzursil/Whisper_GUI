@@ -14,9 +14,12 @@ torch>=2.8.0,<2.9.0 # Needs to be harmonized with torchaudio
 torchaudio>=2.8.0,<2.9.0 # 2.9 deprecates used functions
 git+https://github.com/jhj0517/jhj0517-whisper.git
 faster-whisper==1.1.1
-transformers==4.47.1
-gradio==5.29.0
-gradio-i18n==0.3.1
+# Held below 5.0: transformers 5 removed the "translation" pipeline task, which
+# modules/translation/nllb_inference.py depends on. Leaves GHSA-69w3-r845-3855,
+# GHSA-29pf-2h5f-8g72 and GHSA-fgcw-684q-jj6r open pending an NLLB rewrite.
+transformers>=4.53.0,<5.0.0 # Security floor: GHSA-4w7r-h757-3r74 and 13 other advisories
+gradio>=6.15.1,<7.0.0 # Security floor: GHSA-6655-8ph2-63j3, GHSA-7hp7-4p35-3cx2
+gradio-i18n>=0.3.2,<0.4.0 # 0.3.1 raises LookupError on gradio 6 at import time
 pytubefix
 ruamel.yaml==0.18.6
 pyannote.audio==3.3.2
