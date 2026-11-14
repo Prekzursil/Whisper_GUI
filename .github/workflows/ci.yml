@@ -12,6 +12,9 @@ on:
       - master
       - intel-gpu
 
+permissions:
+  contents: read
+
 # Constrain pip's isolated build environment for every job below. Required because
 # one source dependency's setup.py imports pkg_resources, which setuptools 82
 # removed. See constraints.txt for the full explanation.
