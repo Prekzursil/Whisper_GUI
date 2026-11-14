@@ -65,7 +65,10 @@ async def get_file_task(
 
     if task is not None:
         if task.task_type == TaskType.BGM_SEPARATION:
-            output_zip_path = os.path.join(BACKEND_CACHE_DIR, f"{identifier}_bgm_separation.zip")
+            # Use the DB-stored uuid, not the raw path parameter: `identifier`
+            # comes straight from the URL and could carry path traversal
+            # sequences into os.path.join (CodeQL py/path-injection).
+            output_zip_path = os.path.join(BACKEND_CACHE_DIR, f"{task.uuid}_bgm_separation.zip")
             instrumental_path = find_file_by_hash(
                 os.path.join(BACKEND_CACHE_DIR, "UVR", "instrumental"),
                 task.result["instrumental_hash"]
