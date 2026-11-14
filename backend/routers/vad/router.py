@@ -7,7 +7,7 @@ from fastapi import (
 )
 from fastapi import APIRouter, BackgroundTasks, Depends, Response, status
 from typing import List, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 
 from modules.vad.silero_vad import SileroVAD
 from modules.whisper.data_classes import VadParams
@@ -36,23 +36,23 @@ def run_vad(
         update_data={
             "uuid": identifier,
             "status": TaskStatus.IN_PROGRESS,
-            "updated_at": datetime.utcnow()
+            "updated_at": datetime.now(timezone.utc)
         }
     )
 
-    start_time = datetime.utcnow()
+    start_time = datetime.now(timezone.utc)
     audio, speech_chunks = get_vad_model().run(
         audio=audio,
         vad_parameters=params
     )
-    elapsed_time = (datetime.utcnow() - start_time).total_seconds()
+    elapsed_time = (datetime.now(timezone.utc) - start_time).total_seconds()
 
     update_task_status_in_db(
         identifier=identifier,
         update_data={
             "uuid": identifier,
             "status": TaskStatus.COMPLETED,
-            "updated_at": datetime.utcnow(),
+            "updated_at": datetime.now(timezone.utc),
             "result": speech_chunks,
             "duration": elapsed_time
         }

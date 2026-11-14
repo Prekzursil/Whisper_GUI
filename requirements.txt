@@ -14,9 +14,20 @@ torch>=2.8.0,<2.9.0 # Needs to be harmonized with torchaudio
 torchaudio>=2.8.0,<2.9.0 # 2.9 deprecates used functions
 git+https://github.com/jhj0517/jhj0517-whisper.git
 faster-whisper==1.1.1
+# av 19.0.0 removed the metadata_errors kwarg from av.open(); faster-whisper
+# 1.1.1 (and latest 1.2.1) still pass it, so any audio decode dies with
+# TypeError: open() got an unexpected keyword argument 'metadata_errors'.
+# Cap below 19 until faster-whisper stops passing the kwarg.
+av>=11,<19
 # Held below 5.0: transformers 5 removed the "translation" pipeline task, which
-# modules/translation/nllb_inference.py depends on. Leaves GHSA-69w3-r845-3855,
-# GHSA-29pf-2h5f-8g72 and GHSA-fgcw-684q-jj6r open pending an NLLB rewrite.
+# modules/translation/nllb_inference.py depends on (verified empirically: the
+# 5.x floor was tried in #10 and the test suite failed). Leaves exactly one
+# advisory open: GHSA-xrqw-3rrv-vx5w / CVE-2026-9856 (save_pretrained path
+# traversal via chat template names), fixed only in transformers 5.10.0 — no
+# 4.x fix exists. This codebase never calls save_pretrained or chat_template
+# (grep over all *.py: zero hits), so the vulnerable API is unreachable here.
+# Accepted as residual risk pending an NLLB rewrite that drops the dependency
+# on the translation pipeline task. Do NOT dismiss the alert.
 transformers>=4.53.0,<5.0.0 # Security floor: GHSA-4w7r-h757-3r74 and 13 other advisories
 gradio>=6.15.1,<7.0.0 # Security floor: GHSA-6655-8ph2-63j3, GHSA-7hp7-4p35-3cx2
 gradio-i18n>=0.3.2,<0.4.0 # 0.3.1 raises LookupError on gradio 6 at import time
