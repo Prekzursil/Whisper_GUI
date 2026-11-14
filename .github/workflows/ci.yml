@@ -20,6 +20,9 @@ permissions:
 # removed. See constraints.txt for the full explanation.
 env:
   PIP_CONSTRAINT: ${{ github.workspace }}/constraints.txt
+  # pip >= 26 no longer applies PIP_CONSTRAINT inside build isolation;
+  # PIP_BUILD_CONSTRAINT is the supported way to constrain build deps there.
+  PIP_BUILD_CONSTRAINT: ${{ github.workspace }}/constraints.txt
 
 jobs:
   test:

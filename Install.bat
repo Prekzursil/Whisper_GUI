@@ -12,6 +12,7 @@ REM Constrain pip's isolated build environment. Required because one source
 REM dependency's setup.py imports pkg_resources, which setuptools 82 removed.
 REM See constraints.txt for the full explanation.
 set "PIP_CONSTRAINT=%~dp0constraints.txt"
+set "PIP_BUILD_CONSTRAINT=%~dp0constraints.txt" &REM pip >= 26 build isolation
 
 python -m pip install -U pip
 pip install -r requirements.txt
