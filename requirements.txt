@@ -14,6 +14,11 @@ torch>=2.8.0,<2.9.0 # Needs to be harmonized with torchaudio
 torchaudio>=2.8.0,<2.9.0 # 2.9 deprecates used functions
 git+https://github.com/jhj0517/jhj0517-whisper.git
 faster-whisper==1.1.1
+# av 19.0.0 removed the metadata_errors kwarg from av.open(); faster-whisper
+# 1.1.1 (and latest 1.2.1) still pass it, so any audio decode dies with
+# TypeError: open() got an unexpected keyword argument 'metadata_errors'.
+# Cap below 19 until faster-whisper stops passing the kwarg.
+av>=11,<19
 # Held below 5.0: transformers 5 removed the "translation" pipeline task, which
 # modules/translation/nllb_inference.py depends on (verified empirically: the
 # 5.x floor was tried in #10 and the test suite failed). Leaves exactly one
