@@ -23,4 +23,8 @@
 # Install.bat, the Dockerfile and the CI workflow each set it.
 #
 # Remove this constraint once the upstream package stops importing pkg_resources.
+#
+# pip 26.x note: PIP_CONSTRAINT is no longer applied inside build isolation;
+# every entrypoint below also sets PIP_BUILD_CONSTRAINT to this file, which is
+# pip's supported mechanism for constraining build dependencies there.
 setuptools<82
