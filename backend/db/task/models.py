@@ -4,7 +4,7 @@ from enum import Enum
 from pydantic import BaseModel
 from typing import Optional, List
 from uuid import uuid4
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.types import Enum as SQLAlchemyEnum
 from typing import Any
 from sqlmodel import SQLModel, Field, JSON, Column
@@ -152,12 +152,12 @@ class Task(SQLModel, table=True):
         description="Error message, if any, associated with the task"
     )
     created_at: datetime = Field(
-        default_factory=datetime.utcnow,
+        default_factory=lambda: datetime.now(timezone.utc),
         description="Date and time of creation"
     )
     updated_at: datetime = Field(
-        default_factory=datetime.utcnow,
-        sa_column_kwargs={"onupdate": datetime.utcnow},
+        default_factory=lambda: datetime.now(timezone.utc),
+        sa_column_kwargs={"onupdate": lambda: datetime.now(timezone.utc)},
         description="Date and time of last update"
     )
     progress: Optional[float] = Field(
