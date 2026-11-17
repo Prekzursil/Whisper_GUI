@@ -5,7 +5,7 @@ import os
 from modules.whisper.whisper_factory import WhisperFactory
 from modules.whisper.data_classes import BGMSeparationParams, DiarizationParams, TranscriptionPipelineParams, VadParams, WhisperImpl, WhisperParams
 from modules.utils.subtitle_manager import read_file
-from test_config import TEST_ANSWER, TEST_FILE_PATH, TEST_WHISPER_MODEL, TEST_YOUTUBE_URL, calculate_wer, is_pytube_detected_bot
+from test_config import TEST_ANSWER, TEST_FILE_PATH, TEST_WHISPER_MODEL, TEST_YOUTUBE_URL, calculate_wer, is_pytube_detected_bot, download_file
 
 
 def run_asr_pipeline(

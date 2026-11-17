@@ -1,7 +1,7 @@
 import pytest
 
 from modules.whisper.data_classes import WhisperImpl
-from test_config import is_cuda_available
+from test_config import is_cuda_available, download_file
 from test_transcription import run_asr_pipeline
 
 

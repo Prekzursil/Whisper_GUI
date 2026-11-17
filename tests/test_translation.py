@@ -3,7 +3,7 @@ from modules.translation.nllb_inference import NLLBInference
 
 import os
 import pytest
-from test_config import TEST_NLLB_MODEL, TEST_SUBTITLE_SRT_PATH, TEST_SUBTITLE_VTT_PATH
+from test_config import TEST_NLLB_MODEL, TEST_SUBTITLE_SRT_PATH, TEST_SUBTITLE_VTT_PATH, download_file
 
 
 @pytest.mark.parametrize("model_size, file_path", [
