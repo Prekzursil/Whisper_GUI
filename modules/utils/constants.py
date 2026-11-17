@@ -1,4 +1,4 @@
-from gradio_i18n import Translate, gettext as _
+from gradio_i18n import gettext as _
 
 AUTOMATIC_DETECTION = _("Automatic Detection")
 GRADIO_NONE_STR = ""

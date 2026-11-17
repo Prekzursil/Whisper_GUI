@@ -1,5 +1,4 @@
 from io import BytesIO
-import numpy as np
 import httpx
 import faster_whisper
 from pydantic import BaseModel
@@ -7,7 +6,7 @@ from fastapi import (
     HTTPException,
     UploadFile,
 )
-from typing import Annotated, Any, BinaryIO, Literal, Generator, Union, Optional, List, Tuple
+from typing import Optional
 
 
 class AudioInfo(BaseModel):
@@ -30,6 +29,8 @@ async def read_audio(
         if file_response.status_code != 200:
             raise HTTPException(status_code=422, detail="Could not download the file")
         file_content = file_response.content
+    else:
+        raise HTTPException(status_code=422, detail="Either a file upload or a file URL is required")
     file_bytes = BytesIO(file_content)
     audio = faster_whisper.audio.decode_audio(file_bytes)
     duration = len(audio) / 16000

@@ -1,15 +1,12 @@
 import faster_whisper.transcribe
 import gradio as gr
-import torch
-from typing import Optional, Dict, List, Union, NamedTuple
-from fastapi import Query
+from typing import Optional, Dict, List, Union
 from pydantic import BaseModel, Field, field_validator, ConfigDict
-from gradio_i18n import Translate, gettext as _
+from gradio_i18n import gettext as _
 from enum import Enum
 from copy import deepcopy
-import yaml
 
-from modules.utils.constants import *
+from modules.utils.constants import AUTOMATIC_DETECTION, GRADIO_NONE_NUMBER_MAX, GRADIO_NONE_NUMBER_MIN, GRADIO_NONE_STR
 
 
 class WhisperImpl(Enum):
@@ -341,23 +338,26 @@ class WhisperParams(BaseParams):
     )
 
     @field_validator('lang')
+    @classmethod
     def validate_lang(cls, v):
         from modules.utils.constants import AUTOMATIC_DETECTION
         return None if v == AUTOMATIC_DETECTION.unwrap() else v
 
     @field_validator('suppress_tokens')
+    @classmethod
     def validate_supress_tokens(cls, v):
         import ast
-        try:
-            if isinstance(v, str):
+        if isinstance(v, str):
+            try:
                 suppress_tokens = ast.literal_eval(v)
-                if not isinstance(suppress_tokens, list):
-                    raise ValueError("Invalid Suppress Tokens. The value must be type of List[int]")
-                return suppress_tokens
-            if isinstance(v, list):
-                return v
-        except Exception as e:
-            raise ValueError(f"Invalid Suppress Tokens. The value must be type of List[int]: {e}")
+            except Exception as e:
+                raise ValueError(f"Invalid Suppress Tokens. The value must be type of List[int]: {e}")
+            if not isinstance(suppress_tokens, list):
+                raise ValueError("Invalid Suppress Tokens. The value must be type of List[int]")
+            return suppress_tokens
+        if isinstance(v, list):
+            return v
+        raise ValueError("Invalid Suppress Tokens. The value must be type of List[int]")
 
     @classmethod
     def to_gradio_inputs(cls,

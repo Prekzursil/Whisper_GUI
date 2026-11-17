@@ -1,12 +1,13 @@
-import gradio as gr
 import pytest
 import os
 
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import WhisperImpl
 from modules.vad.silero_vad import SileroVAD
-from test_config import *
-from test_transcription import download_file, run_asr_pipeline
-from faster_whisper.vad import VadOptions, get_speech_timestamps
+from test_config import download_file
+from test_transcription import run_asr_pipeline
+from faster_whisper.vad import VadOptions
+from modules.utils.paths import WEBUI_DIR
+from test_config import TEST_FILE_DOWNLOAD_URL
 
 
 @pytest.mark.parametrize(

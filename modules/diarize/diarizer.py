@@ -9,7 +9,7 @@ import gc
 from modules.utils.paths import DIARIZATION_MODELS_DIR
 from modules.diarize.diarize_pipeline import DiarizationPipeline, assign_word_speakers
 from modules.diarize.audio_loader import load_audio
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import Segment
 
 
 class Diarizer:

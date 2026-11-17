@@ -1,12 +1,11 @@
 import requests
 import time
 import os
-from datetime import datetime
 import gradio as gr
 
 from modules.utils.paths import TRANSLATION_OUTPUT_DIR, DEFAULT_PARAMETERS_CONFIG_PATH
 from modules.utils.constants import AUTOMATIC_DETECTION
-from modules.utils.subtitle_manager import *
+from modules.utils.subtitle_manager import generate_file, get_writer
 from modules.utils.files_manager import load_yaml, save_yaml
 
 """

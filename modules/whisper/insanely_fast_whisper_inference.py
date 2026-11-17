@@ -1,7 +1,7 @@
 import os
 import time
 import numpy as np
-from typing import BinaryIO, Union, Tuple, List, Callable
+from typing import Union, Tuple, List, Callable
 import torch
 from transformers import pipeline
 from transformers.utils import is_flash_attn_2_available
@@ -9,10 +9,9 @@ import gradio as gr
 from huggingface_hub import hf_hub_download
 import whisper
 from rich.progress import Progress, TimeElapsedColumn, BarColumn, TextColumn
-from argparse import Namespace
 
 from modules.utils.paths import (INSANELY_FAST_WHISPER_MODELS_DIR, DIARIZATION_MODELS_DIR, UVR_MODELS_DIR, OUTPUT_DIR)
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import Optional, Segment, WhisperParams
 from modules.whisper.base_transcription_pipeline import BaseTranscriptionPipeline
 from modules.utils.logger import get_logger
 

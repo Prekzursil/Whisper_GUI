@@ -1,12 +1,8 @@
 import functools
-import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from functools import wraps
-from sqlalchemy.exc import SQLAlchemyError
-from fastapi import HTTPException
 from sqlmodel import SQLModel
-from dotenv import load_dotenv
 
 from backend.common.config_loader import read_env
 

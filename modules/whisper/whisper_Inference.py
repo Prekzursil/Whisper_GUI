@@ -1,15 +1,13 @@
 import whisper
 import gradio as gr
 import time
-from typing import BinaryIO, Union, Tuple, List, Callable, Optional
+from typing import Union, Tuple, List, Callable, Optional
 import numpy as np
 import torch
-import os
-from argparse import Namespace
 
 from modules.utils.paths import (WHISPER_MODELS_DIR, DIARIZATION_MODELS_DIR, OUTPUT_DIR, UVR_MODELS_DIR)
 from modules.whisper.base_transcription_pipeline import BaseTranscriptionPipeline
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import Segment, WhisperParams
 
 
 class WhisperInference(BaseTranscriptionPipeline):

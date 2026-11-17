@@ -2,7 +2,6 @@ import os
 import argparse
 import gradio as gr
 from gradio_i18n import Translate, gettext as _
-import yaml
 
 from modules.utils.paths import (FASTER_WHISPER_MODELS_DIR, DIARIZATION_MODELS_DIR, OUTPUT_DIR, WHISPER_MODELS_DIR,
                                  INSANELY_FAST_WHISPER_MODELS_DIR, NLLB_MODELS_DIR, DEFAULT_PARAMETERS_CONFIG_PATH,
@@ -10,11 +9,12 @@ from modules.utils.paths import (FASTER_WHISPER_MODELS_DIR, DIARIZATION_MODELS_D
 from modules.utils.files_manager import load_yaml, MEDIA_EXTENSION
 from modules.whisper.whisper_factory import WhisperFactory
 from modules.translation.nllb_inference import NLLBInference
-from modules.ui.htmls import *
+from modules.ui.htmls import CSS, MARKDOWN, NLLB_VRAM_TABLE
+from modules.utils.constants import AUTOMATIC_DETECTION
 from modules.utils.cli_manager import str2bool
 from modules.utils.youtube_manager import get_ytmetas
 from modules.translation.deepl_api import DeepLAPI
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import BGMSeparationParams, DiarizationParams, VadParams, WhisperImpl, WhisperParams
 from modules.utils.logger import get_logger
 
 
@@ -102,7 +102,7 @@ class App:
         uvr_params = self.default_params["bgm_separation"]
 
         with self.app:
-            lang = gr.Radio(choices=list(self.i18n.keys()),
+            gr.Radio(choices=list(self.i18n.keys()),
                             label=_("Language"), interactive=True,
                             visible=False,  # Set it by development purpose.
                             )
@@ -257,7 +257,7 @@ class App:
                                 files_subtitles = gr.Files(label=_("Downloadable output file"), scale=3)
                                 btn_openfolder = gr.Button('📂', scale=1)
                             with gr.Column():
-                                md_vram_table = gr.HTML(NLLB_VRAM_TABLE, elem_id="md_nllb_vram_table")
+                                gr.HTML(NLLB_VRAM_TABLE, elem_id="md_nllb_vram_table")
 
                         btn_run.click(fn=self.nllb_inf.translate_file,
                                       inputs=[file_subs, dd_model_size, dd_source_lang, dd_target_lang,

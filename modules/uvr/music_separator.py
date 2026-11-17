@@ -1,4 +1,4 @@
-from typing import Optional, Union, List, Dict
+from typing import Optional, Union, List
 import numpy as np
 import torchaudio
 import soundfile as sf
@@ -16,7 +16,7 @@ from modules.utils.logger import get_logger
 logger = get_logger()
 
 try:
-    from uvr.models import MDX, Demucs, VrNetwork, MDXC
+    from uvr.models import MDX
 except Exception as e:
     logger.warning(
         "Failed to import uvr. BGM separation feature will not work. "

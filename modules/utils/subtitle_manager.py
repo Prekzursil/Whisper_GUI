@@ -3,12 +3,10 @@
 import json
 import os
 import re
-import sys
-import zlib
 from typing import Callable, List, Optional, TextIO, Union, Dict, Tuple
 from datetime import datetime
 
-from modules.whisper.data_classes import Segment, Word
+from modules.whisper.data_classes import Segment
 from .files_manager import read_file
 
 
@@ -303,7 +301,6 @@ class WriteSRT(SubtitlesWriter):
         for block in blocks:
             if block.strip() != '':
                 lines = block.strip().split('\n')
-                index = lines[0]
                 time_line = lines[1].split(" --> ")
                 start, end = time_str_to_seconds(time_line[0], self.decimal_marker), time_str_to_seconds(time_line[1], self.decimal_marker)
                 sentence = ' '.join(lines[2:])

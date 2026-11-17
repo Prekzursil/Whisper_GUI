@@ -1,9 +1,9 @@
 from modules.translation.deepl_api import DeepLAPI
 from modules.translation.nllb_inference import NLLBInference
-from test_config import *
 
 import os
 import pytest
+from test_config import TEST_NLLB_MODEL, TEST_SUBTITLE_SRT_PATH, TEST_SUBTITLE_VTT_PATH, download_file
 
 
 @pytest.mark.parametrize("model_size, file_path", [

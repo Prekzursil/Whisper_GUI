@@ -5,19 +5,18 @@ from fastapi import (
     UploadFile,
 )
 import gradio as gr
-from fastapi import APIRouter, BackgroundTasks, Depends, Response, status
-from fastapi.responses import FileResponse
-from typing import List, Dict, Tuple
+from fastapi import APIRouter, BackgroundTasks, Depends, status
+from typing import Tuple
 from datetime import datetime, timezone
 import os
 
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import BGMSeparationParams
 from modules.uvr.music_separator import MusicSeparator
 from modules.utils.paths import BACKEND_CACHE_DIR
 from backend.common.audio import read_audio
 from backend.common.models import QueueResponse
 from backend.common.config_loader import load_server_config
-from backend.common.compresser import get_file_hash, find_file_by_hash
+from backend.common.compresser import get_file_hash
 from backend.db.task.models import TaskStatus, TaskType, ResultType
 from backend.db.task.dao import add_task_to_db, update_task_status_in_db
 from .models import BGMSeparationResult
