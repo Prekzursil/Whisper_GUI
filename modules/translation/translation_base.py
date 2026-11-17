@@ -6,6 +6,7 @@ import gc
 from typing import List
 
 from modules.utils.subtitle_manager import generate_file, get_writer
+from modules.translation.nllb_langs import NLLB_AVAILABLE_LANGS
 from modules.utils.files_manager import load_yaml, save_yaml
 from modules.utils.paths import DEFAULT_PARAMETERS_CONFIG_PATH, NLLB_MODELS_DIR, TRANSLATION_OUTPUT_DIR
 
@@ -167,12 +168,8 @@ class TranslationBase(ABC):
                          max_length: int,
                          add_timestamp: bool):
         def validate_lang(lang: str):
-            # Imported lazily to avoid a module cycle with nllb_inference,
-            # which imports this module for TranslationBase.
-            import modules.translation.nllb_inference as nllb
-
-            if lang in list(nllb.NLLB_AVAILABLE_LANGS.values()):
-                flipped = {value: key for key, value in nllb.NLLB_AVAILABLE_LANGS.items()}
+            if lang in list(NLLB_AVAILABLE_LANGS.values()):
+                flipped = {value: key for key, value in NLLB_AVAILABLE_LANGS.items()}
                 return flipped[lang]
             return lang
 
