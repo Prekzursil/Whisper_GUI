@@ -338,12 +338,14 @@ class WhisperParams(BaseParams):
     )
 
     @field_validator('lang')
-    def validate_lang(self, v):
+    @classmethod
+    def validate_lang(cls, v):
         from modules.utils.constants import AUTOMATIC_DETECTION
         return None if v == AUTOMATIC_DETECTION.unwrap() else v
 
     @field_validator('suppress_tokens')
-    def validate_supress_tokens(self, v):
+    @classmethod
+    def validate_supress_tokens(cls, v):
         import ast
         if isinstance(v, str):
             try:
