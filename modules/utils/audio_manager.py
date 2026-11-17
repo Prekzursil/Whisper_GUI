@@ -18,7 +18,7 @@ def validate_audio(audio: Optional[str] = None):
         return False
 
     try:
-        audio = decode_audio(audio)
+        decode_audio(audio)
         return True
     except Exception as e:
         logger.info(f"The file {audio} is not able to open or corrupted. Please check the file. {e}")
