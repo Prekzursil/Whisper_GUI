@@ -3,13 +3,11 @@
 from faster_whisper.vad import VadOptions, get_vad_model
 import numpy as np
 from typing import BinaryIO, Union, List, Optional, Tuple
-import warnings
-import bisect
 import faster_whisper
 from faster_whisper.transcribe import SpeechTimestampsMap
 import gradio as gr
 
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import Segment
 
 
 class SileroVAD:
@@ -48,9 +46,6 @@ class SileroVAD:
         if not isinstance(audio, np.ndarray):
             audio = faster_whisper.decode_audio(audio, sampling_rate=sampling_rate)
 
-        duration = audio.shape[0] / sampling_rate
-        duration_after_vad = duration
-
         if vad_parameters is None:
             vad_parameters = VadOptions()
         elif isinstance(vad_parameters, dict):
@@ -62,7 +57,6 @@ class SileroVAD:
         )
 
         audio = self.collect_chunks(audio, speech_chunks)
-        duration_after_vad = audio.shape[0] / sampling_rate
 
         return audio, speech_chunks
 

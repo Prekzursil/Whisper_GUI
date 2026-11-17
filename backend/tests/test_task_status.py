@@ -1,9 +1,7 @@
 import time
-import pytest
-from typing import Optional, Union
 import httpx
 
-from backend.db.task.models import TaskStatus, Task
+from backend.db.task.models import TaskStatus
 from backend.tests.test_backend_config import get_client
 
 

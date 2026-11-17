@@ -1,12 +1,8 @@
-import gradio as gr
 import pytest
-import os
 
-from modules.utils.paths import *
-from modules.whisper.whisper_factory import WhisperFactory
-from modules.whisper.data_classes import *
-from test_config import *
-from test_transcription import download_file, run_asr_pipeline
+from modules.whisper.data_classes import WhisperImpl
+from test_config import is_cuda_available
+from test_transcription import run_asr_pipeline
 
 
 @pytest.mark.skipif(

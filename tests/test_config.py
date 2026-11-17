@@ -5,8 +5,8 @@ import pytest
 import requests
 import torch
 
-from modules.utils.paths import *
-from modules.utils.youtube_manager import *
+from modules.utils.paths import WEBUI_DIR
+from modules.utils.youtube_manager import get_ytaudio, get_ytdata
 
 TEST_FILE_DOWNLOAD_URL = "https://github.com/jhj0517/whisper_flutter_new/raw/main/example/assets/jfk.wav"
 TEST_FILE_PATH = os.path.join(WEBUI_DIR, "tests", "jfk.wav")
@@ -36,7 +36,7 @@ def is_pytube_detected_bot(url: str = TEST_YOUTUBE_URL):
         if os.path.exists(yt_temp_path):
             return False
         yt = get_ytdata(url)
-        audio = get_ytaudio(yt)
+        get_ytaudio(yt)
         return False
     except Exception as e:
         print(f"Pytube has detected as a bot: {e}")

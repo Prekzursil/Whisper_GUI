@@ -1,10 +1,8 @@
-from typing import Optional, Union
-import soundfile as sf
+from typing import Optional
 import os
 import numpy as np
 from faster_whisper.audio import decode_audio
 
-from modules.utils.files_manager import is_video
 from modules.utils.logger import get_logger
 
 logger = get_logger()

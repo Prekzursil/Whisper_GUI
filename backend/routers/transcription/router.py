@@ -1,16 +1,14 @@
 import functools
-import uuid
 import numpy as np
 from fastapi import (
     File,
     UploadFile,
 )
 import gradio as gr
-from fastapi import APIRouter, BackgroundTasks, Depends, Response, status
-from typing import List, Dict
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, BackgroundTasks, Depends, status
+from typing import List
 from datetime import datetime, timezone
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import BGMSeparationParams, DiarizationParams, Segment, TranscriptionPipelineParams, VadParams, WhisperParams
 from modules.utils.paths import BACKEND_CACHE_DIR
 from modules.whisper.faster_whisper_inference import FasterWhisperInference
 from backend.common.audio import read_audio
@@ -18,7 +16,6 @@ from backend.common.models import QueueResponse
 from backend.common.config_loader import load_server_config
 from backend.db.task.dao import (
     add_task_to_db,
-    get_db_session,
     update_task_status_in_db
 )
 from backend.db.task.models import TaskStatus, TaskType

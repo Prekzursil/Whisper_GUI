@@ -6,22 +6,22 @@ import torchaudio
 from abc import ABC, abstractmethod
 from typing import BinaryIO, Union, Tuple, List, Callable
 import numpy as np
-from datetime import datetime
 from faster_whisper.vad import VadOptions
 import gc
 from copy import deepcopy
 import time
 
 from modules.uvr.music_separator import MusicSeparator
+import torch
 from modules.utils.paths import (WHISPER_MODELS_DIR, DIARIZATION_MODELS_DIR, OUTPUT_DIR, DEFAULT_PARAMETERS_CONFIG_PATH,
                                  UVR_MODELS_DIR)
-from modules.utils.constants import *
+from modules.utils.constants import AUTOMATIC_DETECTION, GRADIO_NONE_NUMBER_MAX, GRADIO_NONE_NUMBER_MIN, GRADIO_NONE_STR
 from modules.utils.logger import get_logger
-from modules.utils.subtitle_manager import *
+from modules.utils.subtitle_manager import Optional, Segment, generate_file, safe_filename
 from modules.utils.youtube_manager import get_ytdata, get_ytaudio
-from modules.utils.files_manager import get_media_files, format_gradio_files, load_yaml, save_yaml, read_file
+from modules.utils.files_manager import get_media_files, load_yaml, save_yaml, read_file
 from modules.utils.audio_manager import validate_audio
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import TranscriptionPipelineParams
 from modules.diarize.diarizer import Diarizer
 from modules.vad.silero_vad import SileroVAD
 
@@ -144,10 +144,10 @@ class BaseTranscriptionPipeline(ABC):
 
             if bgm_params.enable_offload:
                 self.music_separator.offload()
-            elapsed_time_bgm_sep = time.time() - start_time
 
         origin_audio = deepcopy(audio)
 
+        speech_chunks = None
         if vad_params.vad_filter:
             progress(0, desc="Filtering silent parts from audio..")
             vad_options = VadOptions(
@@ -526,7 +526,7 @@ class BaseTranscriptionPipeline(ABC):
 
         try:
             device = torch.device("mps")
-            sparse_tensor = torch.sparse_coo_tensor(
+            torch.sparse_coo_tensor(
                 indices=torch.tensor([[0, 1], [2, 3]]),
                 values=torch.tensor([1, 2]),
                 size=(4, 4),

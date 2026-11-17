@@ -1,5 +1,4 @@
 import pytest
-from fastapi import UploadFile
 from io import BytesIO
 import os
 import torch
@@ -7,8 +6,7 @@ import torch
 from backend.db.task.models import TaskStatus
 from backend.tests.test_task_status import wait_for_task_completion, fetch_file_response
 from backend.tests.test_backend_config import (
-    get_client, setup_test_file, get_upload_file_instance, calculate_wer,
-    TEST_BGM_SEPARATION_PARAMS, TEST_ANSWER, TEST_BGM_SEPARATION_OUTPUT_PATH
+    get_client, TEST_BGM_SEPARATION_PARAMS, TEST_BGM_SEPARATION_OUTPUT_PATH
 )
 
 

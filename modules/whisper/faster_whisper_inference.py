@@ -5,15 +5,12 @@ import numpy as np
 import torch
 from typing import BinaryIO, Union, Tuple, List, Callable
 import faster_whisper
-from faster_whisper.vad import VadOptions
 import ast
-import ctranslate2
 import whisper
 import gradio as gr
-from argparse import Namespace
 
 from modules.utils.paths import (FASTER_WHISPER_MODELS_DIR, DIARIZATION_MODELS_DIR, UVR_MODELS_DIR, OUTPUT_DIR)
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import Optional, Segment, WhisperParams
 from modules.whisper.base_transcription_pipeline import BaseTranscriptionPipeline
 
 
@@ -201,5 +198,5 @@ class FasterWhisperInference(BaseTranscriptionPipeline):
             if not isinstance(suppress_tokens, list) or not all(isinstance(item, int) for item in suppress_tokens):
                 raise ValueError("Invalid Suppress Tokens. The value must be type of List[int]")
             return suppress_tokens
-        except Exception as e:
+        except Exception:
             raise ValueError("Invalid Suppress Tokens. The value must be type of List[int]")

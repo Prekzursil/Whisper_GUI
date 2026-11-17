@@ -11,7 +11,6 @@ from backend.db.task.dao import (
 )
 from backend.db.task.models import (
     TasksResult,
-    Task,
     TaskStatusResponse,
     TaskType
 )

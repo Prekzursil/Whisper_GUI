@@ -1,4 +1,3 @@
-from typing import Optional
 import os
 import torch
 
@@ -8,7 +7,7 @@ from modules.whisper.faster_whisper_inference import FasterWhisperInference
 from modules.whisper.whisper_Inference import WhisperInference
 from modules.whisper.insanely_fast_whisper_inference import InsanelyFastWhisperInference
 from modules.whisper.base_transcription_pipeline import BaseTranscriptionPipeline
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import WhisperImpl
 from modules.utils.logger import get_logger
 
 

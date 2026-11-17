@@ -4,7 +4,6 @@ from fastapi import (
 )
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
-import os
 import time
 import threading
 
@@ -15,7 +14,7 @@ from backend.routers.bgm_separation.router import get_bgm_separation_inferencer,
 from backend.routers.task.router import task_router
 from backend.common.config_loader import read_env, load_server_config
 from backend.common.cache_manager import cleanup_old_files
-from modules.utils.paths import SERVER_CONFIG_PATH, BACKEND_CACHE_DIR
+from modules.utils.paths import BACKEND_CACHE_DIR
 
 
 def clean_cache_thread(ttl: int, frequency: int) -> threading.Thread:
@@ -38,10 +37,11 @@ async def lifespan(app: FastAPI):
     read_env("DB_URL")  # Place .env file into /configs/.env
     init_db()
 
-    # Inferencer initialization
-    transcription_pipeline = get_pipeline()
-    vad_inferencer = get_vad_model()
-    bgm_separation_inferencer = get_bgm_separation_inferencer()
+    # Inferencer initialization (eagerly build the singletons; the
+    # modules keep the references)
+    get_pipeline()
+    get_vad_model()
+    get_bgm_separation_inferencer()
 
     # Thread initialization
     cache_thread = clean_cache_thread(server_config["cache"]["ttl"], server_config["cache"]["frequency"])
@@ -50,9 +50,8 @@ async def lifespan(app: FastAPI):
     yield
 
     # Release VRAM when server shutdown
-    transcription_pipeline = None
-    vad_inferencer = None
-    bgm_separation_inferencer = None
+    # (pipeline singletons are managed by their modules; there are no local
+    # references to release here)
 
 
 app = FastAPI(

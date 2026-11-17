@@ -2,12 +2,11 @@
 
 import numpy as np
 import pandas as pd
-import os
 from pyannote.audio import Pipeline
 from typing import Optional, Union
 import torch
 
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import Segment
 from modules.utils.paths import DIARIZATION_MODELS_DIR
 from modules.diarize.audio_loader import load_audio, SAMPLE_RATE
 

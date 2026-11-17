@@ -6,13 +6,11 @@ from io import BytesIO
 import os
 import requests
 import pytest
-import yaml
 import jiwer
 
 from backend.main import app
-from modules.whisper.data_classes import *
-from modules.utils.paths import *
-from modules.utils.files_manager import load_yaml, save_yaml
+from modules.whisper.data_classes import BGMSeparationParams, DiarizationParams, VadParams, WhisperParams
+from modules.utils.paths import WEBUI_DIR
 
 TEST_PIPELINE_PARAMS = {**WhisperParams(model_size="tiny", compute_type="float32").model_dump(exclude_none=True),
                         **VadParams().model_dump(exclude_none=True),

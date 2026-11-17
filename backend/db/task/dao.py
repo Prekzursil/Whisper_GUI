@@ -1,8 +1,7 @@
 from typing import Dict, Any
 from sqlalchemy.orm import Session
-from fastapi import Depends
 
-from ..db_instance import handle_database_errors, get_db_session
+from ..db_instance import handle_database_errors
 from .models import Task, TasksResult, TaskStatus
 
 

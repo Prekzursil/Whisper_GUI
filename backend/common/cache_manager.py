@@ -1,6 +1,5 @@
 import time
 import os
-from typing import Optional
 
 from modules.utils.paths import BACKEND_CACHE_DIR
 
@@ -16,6 +15,6 @@ def cleanup_old_files(cache_dir: str = BACKEND_CACHE_DIR, ttl: int = 60):
             if now - os.path.getmtime(filepath) > ttl:
                 try:
                     os.remove(filepath)
-                except Exception as e:
+                except Exception:
                     print(f"Error removing {filepath}")
                     raise

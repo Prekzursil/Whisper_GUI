@@ -1,13 +1,11 @@
-import requests
 import pytest
 import gradio as gr
 import os
 
 from modules.whisper.whisper_factory import WhisperFactory
-from modules.whisper.data_classes import *
+from modules.whisper.data_classes import BGMSeparationParams, DiarizationParams, TranscriptionPipelineParams, VadParams, WhisperImpl, WhisperParams
 from modules.utils.subtitle_manager import read_file
-from modules.utils.paths import WEBUI_DIR
-from test_config import *
+from test_config import TEST_ANSWER, TEST_FILE_PATH, TEST_WHISPER_MODEL, TEST_YOUTUBE_URL, calculate_wer, is_pytube_detected_bot
 
 
 def run_asr_pipeline(
