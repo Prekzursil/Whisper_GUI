@@ -4,7 +4,7 @@ from io import BytesIO
 from backend.db.task.models import TaskStatus
 from backend.tests.test_task_status import wait_for_task_completion
 from backend.tests.test_backend_config import (
-    get_client, TEST_VAD_PARAMS
+    get_client, setup_test_file, get_upload_file_instance, TEST_VAD_PARAMS
 )
 
 
